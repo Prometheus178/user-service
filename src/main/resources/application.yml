@@ -1,0 +1,36 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://booking-core-discovery:8761/eureka
+    instance:
+      preferIpAddress: true
+server:
+  port: 8081
+spring:
+  application:
+    name: booking-core-authentication
+  main:
+    lazy-initialization: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://booking-core_authentication_db:5432/core_authentication
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"
+        implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+        show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    url: jdbc:postgresql://booking-core_authentication_db:5432/core_authentication
+    user: core_user
+    password: core

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1000000000000-1
+      author: sergey (manually)
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            path: /db/changelog/v2/1/sql/roles.sql
