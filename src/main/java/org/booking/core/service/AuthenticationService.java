@@ -1,8 +1,10 @@
-package org.booking.core.service.security;
+package org.booking.core.service;
 
 import org.booking.core.domain.request.AuthenticationRequest;
-import org.booking.core.domain.request.AuthenticationResponse;
+import org.booking.core.domain.request.TokenRequest;
 import org.booking.core.domain.request.BaseRegisterRequest;
+import org.booking.core.domain.response.AuthenticationResponse;
+import org.booking.core.domain.response.LoggedInResponse;
 
 public interface AuthenticationService {
 

@@ -1,16 +1,15 @@
-package org.booking.core.service.security;
+package org.booking.core.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.booking.core.service.JWTService;
 import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.role.RoleClassification;
 import org.booking.core.domain.entity.token.Token;
 import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.AuthenticationRequest;
-import org.booking.core.domain.request.AuthenticationResponse;
 import org.booking.core.domain.request.BaseRegisterRequest;
+import org.booking.core.domain.response.AuthenticationResponse;
 import org.booking.core.repository.RoleRepository;
 import org.booking.core.repository.TokenRepository;
 import org.booking.core.repository.UserRepository;
@@ -20,7 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Log
@@ -30,11 +28,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final JWTService jwtService;
-	private final AuthenticationManager authenticationManager;
 	private final TokenRepository tokenRepository;
+	private final AuthenticationManager authenticationManager;
 	private final RoleRepository roleRepository;
-
+	private final TokenService tokenService;
 
 	@Override
 	public AuthenticationResponse register(BaseRegisterRequest baseRegisterRequest) {
@@ -67,7 +64,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 				.role(role)
 				.build();
 		userRepository.save(user);
-		var jwtToken = generateToken(user, email);
+		var jwtToken = tokenService.generateToken(user, email);
 		return AuthenticationResponse.builder()
 				.token(jwtToken)
 				.build();
@@ -85,9 +82,9 @@ public class AuthenticationServiceBean implements AuthenticationService {
 			Optional<Token> optionalExistToken = tokenRepository.findByEmail(email);
 			String jwtToken;
 			if (optionalExistToken.isPresent()) {
-				jwtToken = refreshToken(optionalExistToken.get());
+				jwtToken = tokenService.refreshToken(optionalExistToken.get());
 			} else {
-				jwtToken = generateToken(user, email);
+				jwtToken = tokenService.generateToken(user, email);
 			}
 			return AuthenticationResponse.builder()
 					.token(jwtToken)
@@ -97,22 +94,4 @@ public class AuthenticationServiceBean implements AuthenticationService {
 		}
 	}
 
-	private String refreshToken(Token existToken) {
-		var jwtToken = jwtService.refreshToken(existToken.getToken(), new Date());
-		existToken.setToken(jwtToken);
-		existToken.setDeleted(false);
-		tokenRepository.save(existToken);
-		log.info(String.format("Refreshed token for user with email: %s", existToken.getEmail()));
-		return jwtToken;
-	}
-
-	private String generateToken(User user, String email) {
-		var jwtToken = jwtService.generateToken(user);
-		Token token = Token.builder()
-				.token(jwtToken)
-				.email(email).build();
-		tokenRepository.save(token);
-		log.info(String.format("Generated token for user with email: %s", email));
-		return jwtToken;
-	}
 }

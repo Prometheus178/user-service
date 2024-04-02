@@ -3,7 +3,7 @@ package org.booking.core.integration.appointment;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.request.AuthenticationResponse;
+import org.booking.core.domain.request.TokenRequest;
 import org.booking.core.domain.request.BaseRegisterRequest;
 import org.booking.core.integration.AbstractIntegrationTest;
 import org.instancio.Instancio;
@@ -45,8 +45,8 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 				.then()
 				.extract()
 				.response();
-		AuthenticationResponse authenticationResponse = response.body().as(AuthenticationResponse.class);
-		return authenticationResponse.getToken();
+		TokenRequest tokenRequest = response.body().as(TokenRequest.class);
+		return tokenRequest.getToken();
 	}
 
 	private static String login(String email) {
@@ -66,7 +66,7 @@ public class RegistrationIntegrationTest extends AbstractIntegrationTest {
 				.then()
 				.extract()
 				.response();
-		AuthenticationResponse authenticationResponse = response.body().as(AuthenticationResponse.class);
-		return authenticationResponse.getToken();
+		TokenRequest tokenRequest = response.body().as(TokenRequest.class);
+		return tokenRequest.getToken();
 	}
 }
