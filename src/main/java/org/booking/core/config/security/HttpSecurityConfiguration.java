@@ -18,7 +18,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class HttpSecurityConfiguration {
 
-	private static final String[] PUBLIC_LIST_URL = {"/api/v1/auth/**"};
+	private static final String[] PUBLIC_LIST_URL = {
+			"/api/v1/auth/**" ,
+			"/api/v1/auth/inner/authenticate"
+	};
+
 	private final AuthenticationProvider authenticationProvider;
 	private final CustomLogoutHandler customLogoutHandler;
 

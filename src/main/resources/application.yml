@@ -13,7 +13,7 @@ spring:
     lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://booking-core_authentication_db:5432/core_authentication
+    url: jdbc:postgresql://booking-core-authentication-db:5432/core_authentication
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
   jpa:
@@ -31,6 +31,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    url: jdbc:postgresql://booking-core_authentication_db:5432/core_authentication
+    url: jdbc:postgresql://booking-core-authentication-db:5432/core_authentication
     user: core_user
     password: core

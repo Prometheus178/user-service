@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  booking-core_authentication_db:
-    container_name: 'booking-core_authentication_db'
+  booking-core-authentication-db:
+    container_name: 'booking-core-authentication-db'
     image: 'postgres:12'
     restart: always
     ports:
@@ -15,8 +15,8 @@ services:
       POSTGRES_PASSWORD: core
     volumes:
       - postgres-data:/var/lib/postgresql/data
-  booking-core_authentication:
-    container_name: 'booking-core_authentication'
+  booking-core-authentication:
+    container_name: 'booking-core-authentication'
     build: .
     ports:
       - 8081:8081
@@ -27,11 +27,11 @@ services:
       _JAVA_OPTIONS: >
         -Xdebug
         -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5001
-      DATABASE_URL: postgresql://booking-core_authentication_db:15432/core_authentication
+      DATABASE_URL: postgresql://booking-core-authentication-db:15432/core_authentication
       DATABASE_USERNAME: core_user
       DATABASE_PASSWORD: core
     depends_on:
-      - booking-core_authentication_db
+      - booking-core-authentication-db
 volumes:
   postgres-data:
 networks:
