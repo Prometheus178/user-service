@@ -19,7 +19,7 @@ plugins {
 }
 
 group = 'org.booking.core'
-version = '1.0'
+version = '2.1'
 sourceCompatibility = '17'
 
 
