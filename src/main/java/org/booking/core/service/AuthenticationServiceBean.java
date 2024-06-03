@@ -29,9 +29,8 @@ public class AuthenticationServiceBean implements AuthenticationService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final TokenRepository tokenRepository;
-	private final AuthenticationManager authenticationManager;
-	private final RoleRepository roleRepository;
 	private final TokenService tokenService;
+	private final UserService userService;
 
 	@Override
 	public AuthenticationResponse register(BaseRegisterRequest baseRegisterRequest) {
@@ -44,27 +43,8 @@ public class AuthenticationServiceBean implements AuthenticationService {
 	}
 
 	private AuthenticationResponse register(BaseRegisterRequest baseRegisterRequest, RoleClassification roleClassification) {
-		String email = baseRegisterRequest.getEmail();
-		if (userRepository.findByEmail(email).isPresent()) {
-			throw new AuthenticationServiceException(String.format("User with email: %s exist", email));
-		}
-		if (!EmailValidator.getInstance().isValid(email)){
-			log.info("Incorrect email: " + email);
-			throw new AuthenticationServiceException(String.format("User email: %s is not valid", email));
-		}
-
-		Role role = roleRepository.findByName(roleClassification.name()).orElseThrow(
-				() -> new AuthenticationServiceException(String.format("Role %s not found",
-						roleClassification.name()))
-		);
-		var user = User.builder()
-				.email(email)
-				.name(baseRegisterRequest.getUsername())
-				.password(passwordEncoder.encode(baseRegisterRequest.getPassword()))
-				.role(role)
-				.build();
-		userRepository.save(user);
-		var jwtToken = tokenService.generateToken(user, email);
+		User user = userService.create(baseRegisterRequest, roleClassification);
+		var jwtToken = tokenService.generateToken(user);
 		return AuthenticationResponse.builder()
 				.token(jwtToken)
 				.build();
@@ -84,7 +64,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 			if (optionalExistToken.isPresent()) {
 				jwtToken = tokenService.refreshToken(optionalExistToken.get());
 			} else {
-				jwtToken = tokenService.generateToken(user, email);
+				jwtToken = tokenService.generateToken(user);
 			}
 			return AuthenticationResponse.builder()
 					.token(jwtToken)
