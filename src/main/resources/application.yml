@@ -34,3 +34,5 @@ spring:
     url: jdbc:postgresql://booking-core-authentication-db:5432/core_authentication
     user: core_user
     password: core
+  kafka:
+    bootstrap-servers: booking-core_kafka:9092
