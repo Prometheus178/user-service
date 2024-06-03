@@ -28,9 +28,9 @@ public class TokenServiceBean implements TokenService{
 		return jwtToken;
 	}
 	@Override
-
-	public String generateToken(User user, String email) {
+	public String generateToken(User user) {
 		var jwtToken = jwtService.generateToken(user);
+		String email = user.getEmail();
 		Token token = Token.builder()
 				.token(jwtToken)
 				.email(email).build();
