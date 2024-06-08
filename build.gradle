@@ -21,14 +21,13 @@ plugins {
 }
 
 group = 'org.booking.core'
-version = '2.1'
+version = '3.2'
 sourceCompatibility = '17'
 
 
 def databaseProps = new Properties()
 file("gradle.properties")
         .withInputStream { databaseProps.load(it) }
-
 
 
 configurations {
@@ -44,8 +43,8 @@ repositories {
 
 ext {
     set('springCloudVersion', "2023.0.1")
-     grpcVersion = '1.56.1'
-      protobufVersion = '3.23.4'
+    grpcVersion = '1.56.1'
+    protobufVersion = '3.23.4'
 }
 
 dependencies {
@@ -80,7 +79,7 @@ dependencies {
     liquibaseRuntime 'ch.qos.logback:logback-classic:1.4.7'
     liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.26.0'
     liquibaseRuntime 'org.springframework.data:spring-data-jpa:3.2.3'
-   // liquibaseRuntime 'org.springframework.boot:spring-boot:3.2.3'
+    // liquibaseRuntime 'org.springframework.boot:spring-boot:3.2.3'
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-security:3.2.3'
 
     liquibaseRuntime 'org.yaml:snakeyaml:2.0'
@@ -104,12 +103,12 @@ dependencies {
     implementation 'commons-validator:commons-validator:1.8.0'
 
     //GRPC
-     implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
 
     //Test
-    testImplementation ('io.rest-assured:rest-assured:5.4.0'){
+    testImplementation('io.rest-assured:rest-assured:5.4.0') {
         exclude group: 'org.apache.groovy', module: 'groovy'
         exclude group: 'org.apache.groovy', module: 'groovy-xml'
     }
@@ -130,8 +129,8 @@ dependencyManagement {
 }
 
 if (!project.hasProperty("runList")) {
-    //project.ext.runList = "main"
-    project.ext.runList = "diffChangeLog"
+    project.ext.runList = "main"
+    //project.ext.runList = "diffChangeLog"
 }
 
 project.ext.diffChangelogFile = "src/main/resources/db/changelog/" + new Date().format("yyyyMMddHHmmss") + "_changelog.yml"
@@ -146,14 +145,14 @@ liquibase {
             referenceUrl databaseProps.getProperty("referenceUrl")
             logLevel "info"
         }
-       diffChangeLog {
-           changelogFile project.ext.diffChangelogFile
-           url databaseProps.getProperty("url")
-           username databaseProps.getProperty("username")
-           password databaseProps.getProperty("password")
-           referenceUrl databaseProps.getProperty("referenceUrl")
-           logLevel "info"
-       }
+        diffChangeLog {
+            changelogFile project.ext.diffChangelogFile
+            url databaseProps.getProperty("url")
+            username databaseProps.getProperty("username")
+            password databaseProps.getProperty("password")
+            referenceUrl databaseProps.getProperty("referenceUrl")
+            logLevel "info"
+        }
     }
     runList = project.ext.runList
 }
@@ -182,6 +181,7 @@ protobuf {
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 tasks.named('test') {
     useJUnitPlatform()
     testLogging {

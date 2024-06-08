@@ -28,6 +28,7 @@ public class User extends AbstractEntity implements UserDetails {
 	private String email;
 	private String password;
 	private String salt;
+	private String timezone;
 
 	@Singular
 	@ManyToMany(fetch = FetchType.EAGER)

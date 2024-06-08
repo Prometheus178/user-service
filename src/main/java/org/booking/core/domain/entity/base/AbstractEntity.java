@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Author: Sergey.
@@ -22,6 +23,8 @@ public abstract class AbstractEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
+	protected UUID uuid;
+
 	@Column(name = "created_at")
 	protected Date createdAt;
 
@@ -33,6 +36,7 @@ public abstract class AbstractEntity {
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
+		this.uuid = UUID.randomUUID();
 	}
 
 	@PreUpdate
