@@ -1,0 +1,219 @@
+databaseChangeLog:
+- changeSet:
+    id: 1717815148122-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: break_timesPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: uuid
+            type: UUID
+        - column:
+            name: end_time
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: start_time
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: break_times
+- changeSet:
+    id: 1717815148122-2
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: non_working_daysPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: uuid
+            type: UUID
+        - column:
+            name: date
+            type: date
+        - column:
+            name: day_of_week
+            type: VARCHAR(255)
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: non_working_days
+- changeSet:
+    id: 1717815148122-3
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: work_hoursPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: uuid
+            type: UUID
+        - column:
+            name: end_time
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: start_time
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: work_hours
+- changeSet:
+    id: 1717815148122-4
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: timezone
+            type: varchar(255)
+        tableName: users
+- changeSet:
+    id: 1717815148122-5
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: uuid
+            type: uuid
+        tableName: roles
+- changeSet:
+    id: 1717815148122-6
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: uuid
+            type: uuid
+        tableName: tokens
+- changeSet:
+    id: 1717815148122-7
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: uuid
+            type: uuid
+        tableName: users
+- changeSet:
+    id: 1717815148122-8
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: user_id
+        constraintName: UC_BREAK_TIMESUSER_ID_COL
+        tableName: break_times
+- changeSet:
+    id: 1717815148122-9
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: user_id
+        constraintName: UC_NON_WORKING_DAYSUSER_ID_COL
+        tableName: non_working_days
+- changeSet:
+    id: 1717815148122-10
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: user_id
+        constraintName: UC_WORK_HOURSUSER_ID_COL
+        tableName: work_hours
+- changeSet:
+    id: 1717815148122-11
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: work_hours
+        constraintName: FK4nuho3rp34refpsyl8i4o74d7
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1717815148122-12
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: break_times
+        constraintName: FK606a1lfbcxgx9utfwto6brknr
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1717815148122-13
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: non_working_days
+        constraintName: FKm3475wn96qoggrflr4ag2n7an
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+

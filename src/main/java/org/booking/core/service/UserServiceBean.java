@@ -50,7 +50,7 @@ public class UserServiceBean implements UserService {
 		);
 		var user = User.builder()
 				.email(email)
-				.name(baseRegisterRequest.getUsername())
+				.name(baseRegisterRequest.getName())
 				.password(passwordEncoder.encode(baseRegisterRequest.getPassword()))
 				.role(role)
 				.build();

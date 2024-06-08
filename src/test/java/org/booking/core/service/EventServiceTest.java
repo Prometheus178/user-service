@@ -51,7 +51,7 @@ class EventServiceTest {
 		UserRegisteredEvent capturedEvent = eventCaptor.getValue();
 		assertNotNull(capturedEvent);
 		assertEquals(user.getId(), capturedEvent.getId());
-		assertEquals(user.getUsername(), capturedEvent.getUsername());
+		assertEquals(user.getUsername(), capturedEvent.getName());
 		assertEquals(user.getEmail(), capturedEvent.getEmail());
 		assertEquals(user.getCreatedAt(), capturedEvent.getRegisteredAt());
 		assertEquals(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()),

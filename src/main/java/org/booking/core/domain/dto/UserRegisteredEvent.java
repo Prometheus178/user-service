@@ -8,7 +8,7 @@ import java.util.Set;
 @Data
 public class UserRegisteredEvent {
 	private Long id;
-	private String username;
+	private String name;
 	private String email;
 	private Set<String> roles;
 	private Date registeredAt;
