@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1711877360456-1
+    id: 1720280495092-1
     author: sergey (generated)
     changes:
     - createTable:
@@ -10,7 +10,7 @@ databaseChangeLog:
             constraints:
               nullable: false
               primaryKey: true
-              primaryKeyName: rolesPK
+              primaryKeyName: contactsPK
             name: id
             type: BIGINT
         - column:
@@ -25,11 +25,20 @@ databaseChangeLog:
             name: modified_at
             type: TIMESTAMP(6) WITHOUT TIME ZONE
         - column:
-            name: name
+            name: uuid
+            type: UUID
+        - column:
+            name: phone_number
             type: VARCHAR(255)
-        tableName: roles
+        - column:
+            name: travel_phone_number
+            type: VARCHAR(255)
+        - column:
+            name: work_phone_number
+            type: VARCHAR(255)
+        tableName: contacts
 - changeSet:
-    id: 1711877360456-2
+    id: 1720280495092-2
     author: sergey (generated)
     changes:
     - createTable:
@@ -54,6 +63,9 @@ databaseChangeLog:
             name: modified_at
             type: TIMESTAMP(6) WITHOUT TIME ZONE
         - column:
+            name: uuid
+            type: UUID
+        - column:
             name: email
             type: VARCHAR(255)
         - column:
@@ -61,28 +73,7 @@ databaseChangeLog:
             type: VARCHAR(765)
         tableName: tokens
 - changeSet:
-    id: 1711877360456-3
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: user_rolesPK
-            name: user_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: user_rolesPK
-            name: role_id
-            type: BIGINT
-        tableName: user_roles
-- changeSet:
-    id: 1711877360456-4
+    id: 1720280495092-3
     author: sergey (generated)
     changes:
     - createTable:
@@ -107,6 +98,9 @@ databaseChangeLog:
             name: modified_at
             type: TIMESTAMP(6) WITHOUT TIME ZONE
         - column:
+            name: uuid
+            type: UUID
+        - column:
             name: email
             type: VARCHAR(255)
         - column:
@@ -116,33 +110,37 @@ databaseChangeLog:
             name: password
             type: VARCHAR(255)
         - column:
+            name: roles
+            type: VARCHAR(255)
+        - column:
             name: salt
             type: VARCHAR(255)
+        - column:
+            name: timezone
+            type: VARCHAR(255)
+        - column:
+            name: contact_id
+            type: BIGINT
         tableName: users
 - changeSet:
-    id: 1711877360456-5
+    id: 1720280495092-4
     author: sergey (generated)
     changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: role_id
-        baseTableName: user_roles
-        constraintName: FKh8ciramu9cc9q3qcqiv4ue8a6
-        deferrable: false
-        initiallyDeferred: false
-        referencedColumnNames: id
-        referencedTableName: roles
-        validate: true
+    - addUniqueConstraint:
+        columnNames: contact_id
+        constraintName: UC_USERSCONTACT_ID_COL
+        tableName: users
 - changeSet:
-    id: 1711877360456-6
+    id: 1720280495092-5
     author: sergey (generated)
     changes:
     - addForeignKeyConstraint:
-        baseColumnNames: user_id
-        baseTableName: user_roles
-        constraintName: FKhfh9dx7w3ubf1co1vdev94g3f
+        baseColumnNames: contact_id
+        baseTableName: users
+        constraintName: FK9s0tlg428ntp5edfquo0r9jxs
         deferrable: false
         initiallyDeferred: false
         referencedColumnNames: id
-        referencedTableName: users
+        referencedTableName: contacts
         validate: true
 

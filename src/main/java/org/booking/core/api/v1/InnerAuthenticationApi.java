@@ -1,4 +1,4 @@
-package org.booking.core.api.v1.authentication;
+package org.booking.core.api.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.request.TokenRequest;

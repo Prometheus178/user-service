@@ -1,40 +1,52 @@
-version: '3.9'
+version: '3.8'
 
 services:
   user-service-db:
     container_name: 'user-service-db'
-    image: 'postgres:12'
-    restart: always
-    ports:
-      - 15432:5432
-    networks:
-      - booking-core
+    image: postgres:14.12
     environment:
-      POSTGRES_DB: user_service
+      POSTGRES_DB: core_db
       POSTGRES_USER: core_user
       POSTGRES_PASSWORD: core
+    ports:
+      - 54321:5432
+    networks:
+      - local-net
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - postgres-core-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U core_user -d core_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
   user-service-app:
     container_name: 'user-service'
     build: .
     ports:
       - 8081:8081
-      - 5001:5001
+      - 5002:5002
     networks:
-      - booking-core
+      - local-net
     environment:
       _JAVA_OPTIONS: >
         -Xdebug
-        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5001
-      DATABASE_URL: postgresql://user-service-db:15432/user_service
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5002
+      DATABASE_URL: postgresql://user-service-db:5432/core_db
       DATABASE_USERNAME: core_user
       DATABASE_PASSWORD: core
     depends_on:
       - user-service-db
 volumes:
-  postgres-data:
+  postgres-core-data:
 networks:
-  booking-core:
-    name: booking-core
+  local-net:
+    name: local-net
     driver: bridge

@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
       relativeToChangelogFile: true
-      file: 20240608115226_changelog.yml
+      file: 20240706184132_changelog.yml

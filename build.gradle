@@ -16,7 +16,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.liquibase.gradle' version '2.2.1'
     id 'jacoco-report-aggregation'
-    id 'com.google.protobuf' version '0.9.4'
 
 }
 
@@ -37,14 +36,13 @@ configurations {
     liquibaseRuntime.extendsFrom runtime
 }
 
-repositories {
-    mavenCentral()
-}
 
 ext {
     set('springCloudVersion', "2023.0.1")
-    grpcVersion = '1.56.1'
-    protobufVersion = '3.23.4'
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -52,7 +50,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.kafka:spring-kafka'
@@ -102,10 +99,8 @@ dependencies {
     //Validator
     implementation 'commons-validator:commons-validator:1.8.0'
 
-    //GRPC
-    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
-    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
-    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    //kafka-streams
+    implementation 'org.apache.kafka:kafka-streams:3.7.0'
 
     //Test
     testImplementation('io.rest-assured:rest-assured:5.4.0') {
@@ -114,12 +109,15 @@ dependencies {
     }
     testImplementation 'io.rest-assured:json-path:5.4.0'
     testImplementation 'io.rest-assured:xml-path:5.4.0'
+
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
     testImplementation group: 'org.instancio', name: 'instancio-junit', version: '3.7.1'
 
-    //Swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
-
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.7.0'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 dependencyManagement {
@@ -129,8 +127,8 @@ dependencyManagement {
 }
 
 if (!project.hasProperty("runList")) {
-    project.ext.runList = "main"
-    //project.ext.runList = "diffChangeLog"
+    //project.ext.runList = "main"
+    project.ext.runList = "diffChangeLog"
 }
 
 project.ext.diffChangelogFile = "src/main/resources/db/changelog/" + new Date().format("yyyyMMddHHmmss") + "_changelog.yml"
@@ -159,25 +157,6 @@ liquibase {
 sourceSets.main.java.srcDir "$buildDir/booking-core/src/main/java"
 sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:${protobufVersion}"
-    }
-    generatedFilesBaseDir = "$projectDir/src/generated"
-    clean {
-        delete generatedFilesBaseDir
-    }
-    plugins {
-        grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
-        }
-    }
-    generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
-    }
-}
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -226,4 +205,5 @@ testCodeCoverageReport {
         html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
 }
+
 build.dependsOn update

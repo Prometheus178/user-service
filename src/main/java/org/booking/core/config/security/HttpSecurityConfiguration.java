@@ -1,7 +1,6 @@
 package org.booking.core.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.booking.core.domain.entity.role.RoleClassification;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

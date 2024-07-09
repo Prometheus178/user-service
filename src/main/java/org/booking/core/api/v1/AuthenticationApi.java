@@ -1,4 +1,4 @@
-package org.booking.core.api.v1.authentication;
+package org.booking.core.api.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.request.AuthenticationRequest;
@@ -27,12 +27,6 @@ public class AuthenticationApi {
 	public ResponseEntity<AuthenticationResponse> clientRegister(
 			@RequestBody BaseRegisterRequest baseRegisterRequest) {
 		return ResponseEntity.ok(authenticationServiceBean.register(baseRegisterRequest));
-	}
-
-	@PostMapping("/business/register")
-	public ResponseEntity<AuthenticationResponse> businessRegister(
-			@RequestBody BaseRegisterRequest baseRegisterRequest) {
-		return ResponseEntity.ok(authenticationServiceBean.businessRegister(baseRegisterRequest));
 	}
 
 	@PutMapping("/login")

@@ -1,19 +1,13 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://booking-core-discovery:8761/eureka
-    instance:
-      preferIpAddress: true
 server:
   port: 8081
 spring:
   application:
-    name:user-service
+    name: user-service
   main:
     lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://user-service-db:5432/user_service
+    url: jdbc:postgresql://user-service-db:5432/core_db
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
   jpa:
@@ -31,7 +25,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    url: jdbc:postgresql://user-service-db:5432/user_service
+    url: jdbc:postgresql://user-service-db:5432/core_db
     user: core_user
     password: core
   kafka:
