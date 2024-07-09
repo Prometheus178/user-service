@@ -2,14 +2,10 @@ package org.booking.core.service;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.dto.UserRegisteredEvent;
-import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.user.User;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
-import static org.booking.core.config.KafkaTopicConfig.USER_REGISTERED_TOPIC;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +18,9 @@ public class EventService {
 		event.setId(user.getId());
 		event.setName(user.getUsername());
 		event.setEmail(user.getEmail());
-		event.setRoles(user.getRoles().stream().map( Role::getName).collect(Collectors.toSet()));
+		event.setRoles(user.getRoles());
 		event.setRegisteredAt(user.getCreatedAt());
-		kafkaTemplate.send(USER_REGISTERED_TOPIC, event);
+		//kafkaTemplate.send(USER_REGISTERED_TOPIC, event);
 	}
 
 

@@ -10,7 +10,5 @@ public interface AuthenticationService {
 
 	AuthenticationResponse register(BaseRegisterRequest baseRegisterRequest);
 
-	AuthenticationResponse businessRegister(BaseRegisterRequest baseRegisterRequest);
-
 	AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
 }

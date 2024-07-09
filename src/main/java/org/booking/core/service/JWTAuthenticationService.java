@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.token.Token;
 import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.TokenRequest;
@@ -14,9 +13,7 @@ import org.booking.core.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Log
 @Service
@@ -75,10 +72,7 @@ public class JWTAuthenticationService {
 			LoggedInResponse loggedInResponse = new LoggedInResponse();
 			loggedInResponse.setUnauthorized(false);
 			loggedInResponse.setUserEmail(userEmail);
-			List<String> roleNames = user.getRoles().stream()
-					.map(Role::getName)
-					.collect(Collectors.toList());
-			loggedInResponse.setRole(roleNames);
+			loggedInResponse.setRole(user.getRoles().stream().toList());
 			return loggedInResponse;
 		}
 	}

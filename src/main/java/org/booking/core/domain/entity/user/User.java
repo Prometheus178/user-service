@@ -3,7 +3,6 @@ package org.booking.core.domain.entity.user;
 import jakarta.persistence.*;
 import lombok.*;
 import org.booking.core.domain.entity.base.AbstractEntity;
-import org.booking.core.domain.entity.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,20 +28,17 @@ public class User extends AbstractEntity implements UserDetails {
 	private String password;
 	private String salt;
 	private String timezone;
+	@CollectionTable
+	private Set<String> roles = new HashSet<>();
 
-	@Singular
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "user_roles",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	private Set<Role> roles = new HashSet<>();
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "contact_id")
+	private Contact contact;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream()
-				.map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+				.map(role -> new SimpleGrantedAuthority("ROLE_" + role))
 				.toList();
 	}
 

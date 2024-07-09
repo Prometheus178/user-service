@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.kafka.common.protocol.types.Field;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -25,4 +28,6 @@ public class BaseRegisterRequest {
 	@NotBlank
 	@Size(min = 6)
 	private String password;
+
+	private Set<String> roles;
 }
