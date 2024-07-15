@@ -7,11 +7,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 
-@Service
-@RequiredArgsConstructor
+
 public class EventService {
 
-	private final KafkaTemplate<String, Object> kafkaTemplate;
+	//private final KafkaTemplate<String, Object> kafkaTemplate;
 
 	public void publishUserRegisteredEvent(User user) {
 		UserRegisteredEvent event = new UserRegisteredEvent();

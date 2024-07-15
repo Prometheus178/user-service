@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.4'
+    id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.liquibase.gradle' version '2.2.1'
     id 'jacoco-report-aggregation'
@@ -53,9 +53,6 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.kafka:spring-kafka'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
 
     //Database
     runtimeOnly "org.postgresql:postgresql"
@@ -114,8 +111,10 @@ dependencies {
     testImplementation group: 'org.instancio', name: 'instancio-junit', version: '3.7.1'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.7.0'
+
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }

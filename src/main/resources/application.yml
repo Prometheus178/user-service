@@ -3,8 +3,8 @@ server:
 spring:
   application:
     name: user-service
-  main:
-    lazy-initialization: true
+  kafka:
+    bootstrap-servers: booking-core_kafka:9092
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://user-service-db:5432/core_db
@@ -28,5 +28,3 @@ spring:
     url: jdbc:postgresql://user-service-db:5432/core_db
     user: core_user
     password: core
-  kafka:
-    bootstrap-servers: booking-core_kafka:9092

@@ -1,7 +1,7 @@
 package org.booking.core.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.BaseRegisterRequest;
@@ -18,12 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Log
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceBean implements UserService {
 
-	private final EventService eventService;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
@@ -34,7 +33,7 @@ public class UserServiceBean implements UserService {
 		if (userRepository.findByEmail(email).isPresent()) {
 			throw new AuthenticationServiceException(String.format("User with email: %s exist", email));
 		}
-		if (!EmailValidator.getInstance().isValid(email)){
+		if (!EmailValidator.getInstance().isValid(email)) {
 			log.info("Incorrect email: " + email);
 			throw new AuthenticationServiceException(String.format("User email: %s is not valid", email));
 		}
@@ -46,7 +45,7 @@ public class UserServiceBean implements UserService {
 				.roles(baseRegisterRequest.getRoles())
 				.build();
 		User createdUser = userRepository.save(user);
-		eventService.publishUserRegisteredEvent(createdUser);
+		//eventService.publishUserRegisteredEvent(createdUser);
 		return createdUser;
 	}
 
@@ -72,6 +71,7 @@ public class UserServiceBean implements UserService {
 		return userRepository.findAll().stream().map(userMapper::toResponse)
 				.collect(Collectors.toList());
 	}
+
 	@Override
 
 	public Optional<UserResponse> updateUser(Long id, UserRequest userRequest) {
@@ -81,6 +81,7 @@ public class UserServiceBean implements UserService {
 			return userMapper.toResponse(userRepository.save(user));
 		});
 	}
+
 	@Override
 
 	public void deleteUser(Long id) {
